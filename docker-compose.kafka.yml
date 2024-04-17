@@ -1,0 +1,104 @@
+version: '3'
+
+services:
+  zookeeper1:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 22181
+      ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_INIT_LIMIT: 5 
+      ZOOKEEPER_SYNC_LIMIT: 2 
+      ZOOKEEPER_SERVERS: "zookeeper1:22888:23888;zookeeper2:32888:33888" 
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    ports:
+      - "22181:22181"
+    networks:
+      - public
+    
+  zookeeper2:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 32181
+      ZOOKEEPER_SERVER_ID: 2
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_INIT_LIMIT: 5 
+      ZOOKEEPER_SYNC_LIMIT: 2 
+      ZOOKEEPER_SERVERS: "zookeeper1:22888:23888;zookeeper2:32888:33888"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1 
+    ports:
+      - "32181:32181"
+    networks:
+      - public
+
+
+  kafka1:
+    image: confluentinc/cp-kafka:latest
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka1:19092,EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092,DOCKER://host.docker.internal:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,DOCKER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper1:22181,zookeeper2:32181"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper1
+      - zookeeper2
+    networks:
+      - public
+
+  kafka2:
+    image: confluentinc/cp-kafka:latest
+    ports:
+      - "9093:9093"
+      - "29093:29093"
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka2:19093,EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9093,DOCKER://host.docker.internal:29093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,DOCKER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper1:22181,zookeeper2:32181"
+    depends_on:
+      - zookeeper1
+      - zookeeper2
+    networks:
+      - public
+
+  kafka3:
+    image: confluentinc/cp-kafka:latest
+    ports:
+      - "9094:9094"
+      - "29094:29094"
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka3:19094,EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9094,DOCKER://host.docker.internal:29094
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,DOCKER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper1:22181,zookeeper2:32181"
+    depends_on:
+      - zookeeper1
+      - zookeeper2
+    networks:
+      - public
+
+  nginx:
+    image: nginx:latest
+    hostname: service_nginx
+    container_name: nginx
+    depends_on:
+      - kafka1
+      - kafka2
+      - kafka3
+    volumes:
+      - ./kafka_nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 9095:9095/tcp
+    networks:
+      - public
+    environment:
+      NGINX_PORT: 9095
+networks:
+  public:
