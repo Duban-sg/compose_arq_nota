@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: front-end-service
+spec:
+  selector:
+    app: front-end
+  ports:
+    - protocol: TCP
+      port: 3001
+      targetPort: 80
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: front-end-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: front-end
+  template:
+    metadata:
+      labels:
+        app: front-end
+    spec:
+      containers:
+        - name: front-end-container
+          image: dubansgupc/front-notas:lastest # Reemplaza esto con el nombre y etiqueta de tu imagen de front-end
+          ports:
+            - containerPort: 80
+          env:
+            - name: REACT_APP_URL_API_SERVER
+              value: "http://apigateway-service:8085/Backend/" # Cambia esto si necesitas apuntar a una dirección diferente

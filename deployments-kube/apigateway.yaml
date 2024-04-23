@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apigateway-deployment
+spec:
+  replicas: 1  # Puedes ajustar el número de réplicas según tus necesidades
+  selector:
+    matchLabels:
+      app: apigateway
+  template:
+    metadata:
+      labels:
+        app: apigateway
+    spec:
+      containers:
+      - name: apigateway-container
+        image: dubansgupc/note_manage_api_gateway:lastest  # Reemplaza con la imagen de tu API Gateway
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: appsettings-volume
+          mountPath: /src/ApiGateway.Api/appsettings.json
+          subPath: appsettings.json
+      volumes:
+      - name: appsettings-volume
+        hostPath:
+          path: /settings/appsettings.json  # Reemplaza con la ruta en tu host donde está appsettings.json
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: apigateway-service
+spec:
+  selector:
+    app: apigateway
+  ports:
+    - protocol: TCP
+      port: 8085
+      targetPort: 80
+  type: NodePort
