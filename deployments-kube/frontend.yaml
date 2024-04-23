@@ -32,4 +32,4 @@ spec:
             - containerPort: 80
           env:
             - name: REACT_APP_URL_API_SERVER
-              value: "http://apigateway-service:8085/Backend/" # Cambia esto si necesitas apuntar a una dirección diferente
+              value: back-end-notes:8085 # Cambia esto si necesitas apuntar a una dirección diferente
