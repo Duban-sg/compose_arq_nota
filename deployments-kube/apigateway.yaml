@@ -24,7 +24,7 @@ spec:
       volumes:
       - name: appsettings-volume
         hostPath:
-          path: /settings/appsettings.json  # Reemplaza con la ruta en tu host donde está appsettings.json
+          path: ~/settings/appsettings.json  # Reemplaza con la ruta en tu host donde está appsettings.json
 
 ---
 apiVersion: v1
