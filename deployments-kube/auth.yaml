@@ -9,6 +9,7 @@ spec:
     - protocol: TCP
       port: 9812
       targetPort: 9812
+  type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment
