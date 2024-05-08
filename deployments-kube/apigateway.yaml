@@ -4,7 +4,7 @@ metadata:
   name: appsettings-pv
 spec:
   capacity:
-    storage: 1Gi
+    storage: 300Mi
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
@@ -20,7 +20,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 300Mi
 ---
 
 apiVersion: apps/v1
