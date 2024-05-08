@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service
+spec:
+  selector:
+    app: myapp
+  ports:
+    - protocol: TCP
+      port: 9812
+      targetPort: 9812
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment
+spec:
+  selector:
+    matchLabels:
+      app: myapp
+  replicas: 1 # Número deseado de réplicas
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - name: myapp-container
+        image: dubansgupc/authapi_quick_dispath:latest
+        ports:
+        - containerPort: 9812
+        env:
+        - name: ACCESS_KEY
+          value: "AKIA4MTWKCBYRROPE6F2"
+        - name: CLIENT_ID
+          value: "1e7d3gb8be6ivdt3u38pn79a1v"
+        - name: CLIENT_SECRET
+          value: "1le7tckkaorpsma7135s3b3s84nf2eb75bfbctakb75fmqs4ct4d"
+        - name: SECRET_KEY
+          value: "PDTuBM7aeDiJtysXoNoDPpLir2NRfYSuqB6bxHUV"
