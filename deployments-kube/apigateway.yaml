@@ -9,7 +9,7 @@ spec:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   hostPath:
-    path: /ruta/en/el/host
+    path: /settings/appsettings.json
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
