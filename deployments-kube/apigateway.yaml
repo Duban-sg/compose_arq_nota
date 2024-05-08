@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: mi-pv
+  name: appsettings-pv
 spec:
   capacity:
     storage: 1Gi
@@ -9,12 +9,12 @@ spec:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   hostPath:
-    path: /settings/appsettings.json
+    path: /settings/apigateway/
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mi-pvc
+  name: appsettings-pvc
 spec:
   accessModes:
     - ReadWriteOnce
@@ -63,4 +63,5 @@ spec:
     - protocol: TCP
       port: 8085
       targetPort: 80
+      nodePort: 31163
   type: NodePort
