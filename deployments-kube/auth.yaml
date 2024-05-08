@@ -31,10 +31,10 @@ spec:
         - containerPort: 9812
         env:
         - name: ACCESS_KEY
-          value: "AKIA4MTWKCBYRROPE6F2"
+          value: ""
         - name: CLIENT_ID
-          value: "1e7d3gb8be6ivdt3u38pn79a1v"
+          value: ""
         - name: CLIENT_SECRET
-          value: "1le7tckkaorpsma7135s3b3s84nf2eb75bfbctakb75fmqs4ct4d"
+          value: ""
         - name: SECRET_KEY
-          value: "PDTuBM7aeDiJtysXoNoDPpLir2NRfYSuqB6bxHUV"
+          value: ""
