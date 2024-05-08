@@ -1,28 +1,3 @@
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: appsettings-pv
-spec:
-  capacity:
-    storage: 300Mi
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  hostPath:
-    path: /settings/apigateway/
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: appsettings-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 300Mi
----
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -39,17 +14,23 @@ spec:
     spec:
       containers:
       - name: apigateway-container
-        image: dubansgupc/note_manage_api_gateway:1.0  
+        image: dubansgupc/note_manage_api_gateway:1.0
         ports:
         - containerPort: 8080
         volumeMounts:
-        - name: appsettings-volume
-          mountPath: /src/ApiGateway.Api/appsettings.json
-          subPath: appsettings.json
+        - mountPath: /src/ApiGateway.Api
+          name: appsettings-volume
+        - mountPath: /src/ApiGateway.Api/appsettings.json
+          name: appsettings-volume-json
       volumes:
       - name: appsettings-volume
-        persistentVolumeClaim:
-          claimName: appsettings-pvc  # Referencia al PVC creado anteriormente
+        hostPath:
+          path: /home/ubuntu/settings
+          type: DirectoryOrCreate
+      - name: appsettings-volume-json
+        hostPath:
+          path: /home/ubuntu/settings/appsettings.json
+          type: FileOrCreate
 
 ---
 apiVersion: v1
