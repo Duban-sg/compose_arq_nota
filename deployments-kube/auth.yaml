@@ -4,7 +4,7 @@ metadata:
   name: auth-service
 spec:
   selector:
-    app: authService
+    app: auth-service
   ports:
     - protocol: TCP
       port: 9812
@@ -17,15 +17,15 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: authService
+      app: auth-service
   replicas: 1 # Número deseado de réplicas
   template:
     metadata:
       labels:
-        app: authService
+        app: auth-service
     spec:
       containers:
-      - name: authService-container
+      - name: auth-service-container
         image: dubansgupc/authapi_quick_dispath:latest
         ports:
         - containerPort: 9812
