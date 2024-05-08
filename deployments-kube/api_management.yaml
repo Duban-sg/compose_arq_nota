@@ -35,4 +35,4 @@ spec:
         - name: ASPNETCORE_ENVIRONMENT
           value: "Development"
         - name: MONGO_CONNECTION_STRING
-          value: "mongodb://dubancsierra:4eLNFkI9TFCLgYzP@mongodb:27017/test?directConnection=true&authSource=admin&appName=mongosh+2.1.5"
+          value: "mongodb://dubancsierra:4eLNFkI9TFCLgYzP@$(SERVICIO2_NOMBRE):27017/test?directConnection=true&authSource=admin&appName=mongosh+2.1.5"
