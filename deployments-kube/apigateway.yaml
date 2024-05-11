@@ -18,15 +18,11 @@ spec:
         ports:
         - containerPort: 8080
         volumeMounts:
-        - mountPath: /app/
-          name: appsettings-volume
         - mountPath: /app/appsettings.json
           name: appsettings-volume-json
       volumes:
       - name: appsettings-volume
         hostPath:
-          path: /home/ubuntu/settings
-          type: DirectoryOrCreate
       - name: appsettings-volume-json
         hostPath:
           path: /home/ubuntu/settings/appsettings.json
